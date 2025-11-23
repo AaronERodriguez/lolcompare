@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import z from "zod";
 import SummonerContainer from "./SummonerContainer";
+import NavBar from "./NavBar";
 
 const formSchema = z.object({
   summonerName: z.string().min(1, "Summoner name is required"),
@@ -28,11 +29,12 @@ interface UserData {
 export default function Home() {
 
   return (
-    <>
+    <div className="flex flex-col gap-4">
+      <NavBar />
       <div className="flex flex-row w-full justify-around">
         <SummonerContainer />
         <SummonerContainer />
       </div>
-    </>
+    </div>
   );
 }
