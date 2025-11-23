@@ -40,6 +40,7 @@ export async function POST(request: Request) {
         puuid : puuid,
         region: regionData.region
     }
+    console.log(result);
 
     return NextResponse.json({ message: result});
 }
