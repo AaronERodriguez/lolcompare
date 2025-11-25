@@ -32,13 +32,21 @@ export async function POST(request: Request) {
     }
     });
     const regionData = await regionResposne.json();
+    const dataThree = await fetch(`https://la1.api.riotgames.com/lol/league/v4/entries/by-puuid/${puuid}`, {
+      method: "GET", headers:{
+        "X-Riot-Token": process.env.RIOT_API_KEY || "",
+      }
+    });
+    const rankData = await dataThree.json();
+    
     const result = {
         gameName : data.gameName,
         tagLine : data.tagLine,
         profileIconId : datatwo.profileIconId,
         summonerLevel : datatwo.summonerLevel,
         puuid : puuid,
-        region: regionData.region
+        region: regionData.region,
+        rank: rankData
     }
     console.log(result);
 

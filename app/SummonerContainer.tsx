@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button';
-import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -21,6 +21,7 @@ interface UserData {
   profileIconId: number;
   puuid: string;
   region: string;
+  rank: Array<object>;
 }
 
 function SummonerContainer({}: Props) {
@@ -100,6 +101,21 @@ function SummonerContainer({}: Props) {
             <CardTitle>{userData.gameName}#{userData.tagLine}</CardTitle>
             <CardDescription>Level: {userData.summonerLevel}</CardDescription>
             </CardHeader>
+            <CardContent>
+                {userData.rank.length === 0 ? (
+                    <p>Unranked</p>
+                ) : (
+                    userData.rank.map((rankInfo: any) => (
+                        <div key={rankInfo.leagueId} className="mb-4">
+                            <h3 className="text-lg font-semibold">{rankInfo.queueType.replace('_', ' ')}</h3>
+                            <p>Tier: {rankInfo.tier} {rankInfo.rank}</p>
+                            <p>LP: {rankInfo.leaguePoints}</p>
+                            <p>Wins: {rankInfo.wins} | Losses: {rankInfo.losses}</p>
+                            <p>Win Rate: {((rankInfo.wins / (rankInfo.wins + rankInfo.losses)) * 100).toFixed(2)}%</p>
+                        </div>
+                    ))
+                )}
+            </CardContent>
         </Card>        
         </>}
     </div>
