@@ -99,7 +99,7 @@ function SummonerContainer({}: Props) {
             <CardHeader className="flex flex-col items-center">
             <img src={`https://ddragon-webp.lolmath.net/latest/img/profileicon//${userData.profileIconId}.webp`} alt="Profile Icon" width={100} height={100} />
             <CardTitle>{userData.gameName}#{userData.tagLine}</CardTitle>
-            <CardDescription>Level: {userData.summonerLevel}</CardDescription>
+            <CardDescription className='text-center'>Level: {userData.summonerLevel}<br />Region: {userData.region}</CardDescription>
             </CardHeader>
             <CardContent>
                 {userData.rank.length === 0 ? (
