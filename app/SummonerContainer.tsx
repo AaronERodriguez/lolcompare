@@ -127,9 +127,9 @@ function SummonerContainer({}: Props) {
                 {userData.rank.length === 0 ? (
                     <p>Unranked</p>
                 ) : (
-                    userData.rank.map((rankInfo: any) => (
+                    userData.rank.map((rankInfo: rankInfo) => (
                         <div key={rankInfo.leagueId} className="mb-4">
-                            <h3 className="text-lg font-semibold">{rankInfo.queueType.replace('_', ' ')}</h3>
+                            <h3 className="text-lg font-semibold">{rankInfo.queueType.replace('_', ' ')} <img src={`./images/rank/${rankInfo.tier.toLowerCase()}.png`} className='size-12 inline'/></h3>
                             <p>Rank: {rankInfo.tier} {rankInfo.rank}</p>
                             <p>LP: {rankInfo.leaguePoints}</p>
                             <p>Wins: {rankInfo.wins} | Losses: {rankInfo.losses}</p>
