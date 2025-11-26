@@ -2,6 +2,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { cn, convertRankToNumber, Division, Tier } from '@/lib/utils';
 import { champInfo, rankInfo, UserData } from '@/types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import React, { useState } from 'react'
@@ -10,61 +11,23 @@ import z, { set } from 'zod';
 
 type Props = {
     userData: UserData | null;
-    disabled: boolean;
     noUserFound: boolean;
-    onSubmit: (data: z.infer<typeof formSchema>) => void;
-    form: ReturnType<typeof useForm<z.infer<typeof formSchema>>>;
+    otherUserData?: UserData | null;
 }
 
 
 
-const formSchema = z.object({
-  summonerName: z.string().min(1, "Summoner name is required"),
-  tagLine: z.string().min(1, "Tag line is required"),
-})
-
-function SummonerContainer({ userData, disabled, noUserFound, onSubmit, form }: Props) {
+function SummonerContainer({ userData, noUserFound, otherUserData }: Props) {
 
     return (
-    <div className="w-full">
-        <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-            <FormField
-            control={form.control}
-            name="summonerName"
-            render={({ field }) => (
-                <FormItem>
-                <FormLabel>Summoner Name</FormLabel>
-                <FormControl>
-                    <Input placeholder="Summoner Name" {...field} />
-                </FormControl>
-                <FormDescription>Enter your League of Legends summoner name.</FormDescription>
-                <FormMessage />
-                </FormItem>
-            )}
-            />
-            <FormField 
-            control={form.control}
-            name="tagLine"
-            render={({ field }) => (
-                <FormItem>
-                <FormLabel>Tag Line</FormLabel>
-                <FormControl>
-                    <Input placeholder="Tag Line" {...field} />
-                </FormControl>
-                <FormDescription>Enter your League of Legends tag line.</FormDescription>
-                <FormMessage />
-                </FormItem>
-            )}
-            />
-            <Button type="submit" disabled={disabled}>Submit</Button>
-        </form>
-        </Form>
+    <div className="w-full">  
         {noUserFound && <p className="text-red-500 mt-4">No user found. Please check the summoner name and tag line.</p>}
         {userData && <>
         <Card className='pt-0'>
-            <CardHeader className="flex flex-col items-center bg-secondary m-0 p-4 rounded-t-xl">
-            <img src={`https://ddragon-webp.lolmath.net/latest/img/profileicon//${userData.profileIconId}.webp`} alt="Profile Icon" width={100} height={100} />
+            <CardHeader className={cn("flex flex-col items-center m-0 p-4 rounded-t-xl", 
+                otherUserData ? otherUserData.summonerLevel > userData.summonerLevel ? "bg-red-500/10" : otherUserData.summonerLevel < userData.summonerLevel ? "bg-green-500/10" : "bg-yellow-500/10" : "bg-primary/10"
+            )}>
+            <img src={`https://ddragon-webp.lolmath.net/latest/img/profileicon/${userData.profileIconId}.webp`} alt="Profile Icon" width={100} height={100} />
             <CardTitle>{userData.gameName}#{userData.tagLine}</CardTitle>
             <CardDescription className='text-center'>Level: {userData.summonerLevel}<br />Region: {userData.region}</CardDescription>
             </CardHeader>
@@ -73,7 +36,11 @@ function SummonerContainer({ userData, disabled, noUserFound, onSubmit, form }: 
                     <p>Unranked</p>
                 ) : (
                     userData.rank.map((rankInfo: rankInfo) => (
-                        <div key={rankInfo.leagueId} className="mb-4">
+                        <div key={rankInfo.leagueId} className={cn("mb-4", otherUserData && otherUserData.rank.length > 0 ? (
+                            otherUserData.rank.find(r => r.queueType === rankInfo.queueType) ? (
+                                convertRankToNumber(rankInfo.tier as Tier, rankInfo.rank as Division, rankInfo.leaguePoints) > convertRankToNumber(otherUserData.rank.find(r => r.queueType === rankInfo.queueType)!.tier as Tier, otherUserData.rank.find(r => r.queueType === rankInfo.queueType)!.rank as Division, otherUserData.rank.find(r => r.queueType === rankInfo.queueType)!.leaguePoints) ? "bg-green-500/10 p-2 rounded-md" : convertRankToNumber(otherUserData.rank.find(r => r.queueType === rankInfo.queueType)!.tier as Tier, otherUserData.rank.find(r => r.queueType === rankInfo.queueType)!.rank as Division, otherUserData.rank.find(r => r.queueType === rankInfo.queueType)!.leaguePoints) > convertRankToNumber(rankInfo.tier as Tier, rankInfo.rank as Division, rankInfo.leaguePoints) ? "bg-red-500/10 p-2 rounded-md" : "bg-yellow-500/10 p-2 rounded-md"
+                            ) : ""
+                        ) : "")}>
                             <h3 className="text-lg font-semibold">{rankInfo.queueType.replace('_', ' ')}</h3>
                             <img src={`./images/rank/${rankInfo.tier.toLowerCase()}.png`} className='size-24 mx-auto block'/>
                             <p className='text-center text-lg font-semibold'>{rankInfo.tier} {rankInfo.rank} <span className='font-normal'>{rankInfo.leaguePoints} LP</span></p>

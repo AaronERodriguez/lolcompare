@@ -4,6 +4,9 @@ import { useForm } from 'react-hook-form';
 import z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { UserData } from '@/types';
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
 
 type Props = {}
 
@@ -90,10 +93,81 @@ function Comparison({}: Props) {
                 setDisabledTwo(false);
             })
         }
+
   return (
-    <div className="flex flex-row w-full justify-around">
-        <SummonerContainer userData={userOneData} disabled={disabledOne} noUserFound={noUserOneFound} onSubmit={onOneSubmit} form={formOne} />
-        <SummonerContainer userData={userTwoData} disabled={disabledTwo} noUserFound={noUserTwoFound} onSubmit={onTwoSubmit} form={formTwo} />
+    <div className='flex flex-col'>
+        <div className='w-full flex flex-row gap-2 p-1'>
+            <Form {...formOne}>
+            <form onSubmit={formOne.handleSubmit(onOneSubmit)} className="space-y-8 w-full">
+                <FormField
+                control={formOne.control}
+                name="summonerName"
+                render={({ field }) => (
+                    <FormItem>
+                    <FormLabel>Summoner Name</FormLabel>
+                    <FormControl>
+                        <Input placeholder="Summoner Name" {...field} />
+                    </FormControl>
+                    <FormDescription>Enter your League of Legends summoner name.</FormDescription>
+                    <FormMessage />
+                    </FormItem>
+                )}
+                />
+                <FormField 
+                control={formOne.control}
+                name="tagLine"
+                render={({ field }) => (
+                    <FormItem>
+                    <FormLabel>Tag Line</FormLabel>
+                    <FormControl>
+                        <Input placeholder="Tag Line" {...field} />
+                    </FormControl>
+                    <FormDescription>Enter your League of Legends tag line.</FormDescription>
+                    <FormMessage />
+                    </FormItem>
+                )}
+                />
+                <Button type="submit" disabled={disabledOne}>Submit</Button>
+            </form>
+            </Form>
+            <Form {...formTwo}>
+            <form onSubmit={formTwo.handleSubmit(onTwoSubmit)} className="space-y-8 w-full">
+                <FormField
+                control={formTwo.control}
+                name="summonerName"
+                render={({ field }) => (
+                    <FormItem>
+                    <FormLabel>Summoner Name</FormLabel>
+                    <FormControl>
+                        <Input placeholder="Summoner Name" {...field} />
+                    </FormControl>
+                    <FormDescription>Enter your League of Legends summoner name.</FormDescription>
+                    <FormMessage />
+                    </FormItem>
+                )}
+                />
+                <FormField 
+                control={formTwo.control}
+                name="tagLine"
+                render={({ field }) => (
+                    <FormItem>
+                    <FormLabel>Tag Line</FormLabel>
+                    <FormControl>
+                        <Input placeholder="Tag Line" {...field} />
+                    </FormControl>
+                    <FormDescription>Enter your League of Legends tag line.</FormDescription>
+                    <FormMessage />
+                    </FormItem>
+                )}
+                />
+                <Button type="submit" disabled={disabledTwo}>Submit</Button>
+            </form>
+            </Form>
+        </div>
+        <div className="flex flex-row w-full justify-around">
+            <SummonerContainer userData={userOneData} noUserFound={noUserOneFound} otherUserData={userTwoData}/>
+            <SummonerContainer userData={userTwoData}  noUserFound={noUserTwoFound} otherUserData={userOneData}/>
+        </div>
     </div>
   )
 }
