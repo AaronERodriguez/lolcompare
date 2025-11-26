@@ -11,30 +11,16 @@ import { useForm } from "react-hook-form";
 import z from "zod";
 import SummonerContainer from "./SummonerContainer";
 import NavBar from "./NavBar";
-
-const formSchema = z.object({
-  summonerName: z.string().min(1, "Summoner name is required"),
-  tagLine: z.string().min(1, "Tag line is required"),
-})
-
-interface UserData {
-  gameName: string;
-  tagLine: string;
-  summonerLevel: number;
-  profileIconId: number;
-  puuid: string;
-  region: string;
-}
+import Comparison from "./Comparison";
 
 export default function Home() {
+
+  
 
   return (
     <div className="flex flex-col gap-4">
       <NavBar />
-      <div className="flex flex-row w-full justify-around">
-        <SummonerContainer />
-        <SummonerContainer />
-      </div>
+      <Comparison />
     </div>
   );
 }

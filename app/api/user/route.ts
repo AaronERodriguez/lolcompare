@@ -66,7 +66,6 @@ export async function POST(request: Request) {
         rank: rankData,
         topChamps: topChamps,
     }
-    console.log(result);
 
     return NextResponse.json({ message: result});
 }
