@@ -8,6 +8,7 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Spinner } from '@/components/ui/spinner';
 
 type Props = {}
 
@@ -256,8 +257,8 @@ function Comparison({}: Props) {
             </Form>
         </div>
         <div className="flex flex-row w-full justify-around">
-            {loadingOne ? <p className='w-full'>Loading User One Data...</p> : <SummonerContainer userData={userOneData} noUserFound={noUserOneFound} otherUserData={userTwoData}/>}
-            {loadingTwo ? <p className='w-full'>Loading User Two Data...</p> : <SummonerContainer userData={userTwoData}  noUserFound={noUserTwoFound} otherUserData={userOneData}/>}
+            {loadingOne ? <p className='w-full text-center'><Spinner className='size-20 block mx-auto' /> Loading User One Data...</p> : <SummonerContainer userData={userOneData} noUserFound={noUserOneFound} otherUserData={userTwoData}/>}
+            {loadingTwo ? <p className='w-full text-center'><Spinner className='size-20 block mx-auto' /> Loading User Two Data...</p> : <SummonerContainer userData={userTwoData}  noUserFound={noUserTwoFound} otherUserData={userOneData}/>}
         </div>
     </div>
   )
