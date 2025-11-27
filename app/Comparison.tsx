@@ -22,9 +22,11 @@ function Comparison({}: Props) {
     const [userOneData, setUserOneData] = useState<UserData | null>(null);
     const [disabledOne, setDisabledOne] = useState<boolean>(false);
     const [noUserOneFound, setNoUserOneFound] = useState<boolean>(false);
+    const [loadingOne, setLoadingOne] = useState<boolean>(false);
     const [userTwoData, setUserTwoData] = useState<UserData | null>(null);
     const [disabledTwo, setDisabledTwo] = useState<boolean>(false);
     const [noUserTwoFound, setNoUserTwoFound] = useState<boolean>(false);
+    const [loadingTwo, setLoadingTwo] = useState<boolean>(false);
     
         const formOne = useForm<z.infer<typeof formSchema>>({
             resolver: zodResolver(formSchema),
@@ -47,6 +49,7 @@ function Comparison({}: Props) {
 
         const onOneSubmit = (data: z.infer<typeof formSchema>) => {
             setDisabledOne(true);
+            setLoadingOne(true);
             fetch('/api/user', {
               method: 'POST',
               headers: {
@@ -60,20 +63,23 @@ function Comparison({}: Props) {
             })
             .then(response => response.json())
             .then(mes => {
-                if (mes.message.gameName == undefined) {
+                if (mes.message.gameName == undefined || mes.message.summonerLevel == undefined) {
                     console.log("No user found");
                     setNoUserOneFound(true);
                     setDisabledOne(false);
+                    setLoadingOne(false);
                     return;
                 }
                 setNoUserOneFound(false);
                 setUserOneData(mes.message);
                 setDisabledOne(false);
+                setLoadingOne(false);
             })
         }
 
         const onTwoSubmit = (data: z.infer<typeof formSchema>) => {
             setDisabledTwo(true);
+            setLoadingTwo(true);
             fetch('/api/user', {
               method: 'POST',
               headers: {
@@ -87,15 +93,17 @@ function Comparison({}: Props) {
             })
             .then(response => response.json())
             .then(mes => {
-                if (mes.message.gameName == undefined) {
+                if (mes.message.gameName == undefined || mes.message.summonerLevel == undefined) {
                     console.log("No user found");
                     setNoUserTwoFound(true);
                     setDisabledTwo(false);
+                    setLoadingTwo(false);
                     return;
                 }
                 setNoUserTwoFound(false);
                 setUserTwoData(mes.message);
                 setDisabledTwo(false);
+                setLoadingTwo(false);
             })
         }
 
@@ -248,8 +256,8 @@ function Comparison({}: Props) {
             </Form>
         </div>
         <div className="flex flex-row w-full justify-around">
-            <SummonerContainer userData={userOneData} noUserFound={noUserOneFound} otherUserData={userTwoData}/>
-            <SummonerContainer userData={userTwoData}  noUserFound={noUserTwoFound} otherUserData={userOneData}/>
+            {loadingOne ? <p className='w-full'>Loading User One Data...</p> : <SummonerContainer userData={userOneData} noUserFound={noUserOneFound} otherUserData={userTwoData}/>}
+            {loadingTwo ? <p className='w-full'>Loading User Two Data...</p> : <SummonerContainer userData={userTwoData}  noUserFound={noUserTwoFound} otherUserData={userOneData}/>}
         </div>
     </div>
   )

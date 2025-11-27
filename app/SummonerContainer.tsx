@@ -12,7 +12,7 @@ function SummonerContainer({ userData, noUserFound, otherUserData }: Props) {
 
     return (
     <div className="w-full">  
-        {noUserFound && <p className="text-red-500 mt-4">No user found. Please check the summoner name and tag line.</p>}
+        {noUserFound ? <p className="text-red-500 mt-4 w-full">No user found. Please check the summoner name and tag line.</p> : null}
         {userData && <>
         <Card className='pt-0 gap-0'>
             <CardHeader className={cn("flex flex-col items-center m-0 p-4 rounded-t-xl", 
