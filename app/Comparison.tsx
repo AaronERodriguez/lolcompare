@@ -7,12 +7,14 @@ import { UserData } from '@/types';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 type Props = {}
 
 const formSchema =  z.object({
   summonerName: z.string().min(1, "Summoner name is required"),
   tagLine: z.string().min(1, "Tag line is required"),
+  region: z.string().min(1, "Region is required"),
 })
 
 function Comparison({}: Props) {
@@ -29,6 +31,7 @@ function Comparison({}: Props) {
             defaultValues: {
                 summonerName: "",
                 tagLine: "",
+                region: ""
             },
         })
 
@@ -52,6 +55,7 @@ function Comparison({}: Props) {
               body: JSON.stringify({
                 summonerName: data.summonerName,
                 tagLine: data.tagLine,
+                region: data.region,
               }),
             })
             .then(response => response.json())
@@ -78,6 +82,7 @@ function Comparison({}: Props) {
               body: JSON.stringify({
                 summonerName: data.summonerName,
                 tagLine: data.tagLine,
+                region: data.region,
               }),
             })
             .then(response => response.json())
@@ -127,6 +132,45 @@ function Comparison({}: Props) {
                     </FormItem>
                 )}
                 />
+                <FormField 
+                control={formOne.control}
+                name="region"
+                render={({ field }) => (
+                    <FormItem>
+                    <FormLabel>
+                        Region
+                        <FormControl>
+                        <Select onValueChange={field.onChange} value={field.value} defaultValue={field.value}>
+                            <SelectTrigger>
+                                <SelectValue placeholder="Select Region" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="NA1">NA</SelectItem>
+                                <SelectItem value="EUW1">EUW</SelectItem>
+                                <SelectItem value="EUN1">EUNE</SelectItem>
+                                <SelectItem value="LA1">LAN</SelectItem>
+                                <SelectItem value="LA2">LAS</SelectItem>
+                                <SelectItem value="BR1">BR</SelectItem>
+                                <SelectItem value="JP1">JP</SelectItem>
+                                <SelectItem value="KR">KR</SelectItem>
+                                <SelectItem value="OC1">OCE</SelectItem>
+                                <SelectItem value="RU">RU</SelectItem>
+                                <SelectItem value="TR1">TR</SelectItem>
+                                <SelectItem value="ME1">ME</SelectItem>
+                                <SelectItem value="SEA">SEA</SelectItem>
+                                <SelectItem value="TW2">TW</SelectItem>
+                                <SelectItem value="VN2">VN</SelectItem>
+                                <SelectItem value="SG2">SG</SelectItem>
+                            </SelectContent>
+                        </Select>
+                    </FormControl>
+                    </FormLabel>
+                    
+                    <FormDescription>Enter your League of Legends region.</FormDescription>
+                    <FormMessage />
+                    </FormItem>
+                )}
+                />
                 <Button type="submit" disabled={disabledOne}>Submit</Button>
             </form>
             </Form>
@@ -156,6 +200,45 @@ function Comparison({}: Props) {
                         <Input placeholder="Tag Line" {...field} />
                     </FormControl>
                     <FormDescription>Enter your League of Legends tag line.</FormDescription>
+                    <FormMessage />
+                    </FormItem>
+                )}
+                />
+                <FormField 
+                control={formTwo.control}
+                name="region"
+                render={({ field }) => (
+                    <FormItem>
+                    <FormLabel>
+                        Region
+                        <FormControl>
+                        <Select onValueChange={field.onChange} value={field.value} defaultValue={field.value}>
+                            <SelectTrigger>
+                                <SelectValue placeholder="Select Region" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="NA1">NA</SelectItem>
+                                <SelectItem value="EUW1">EUW</SelectItem>
+                                <SelectItem value="EUN1">EUNE</SelectItem>
+                                <SelectItem value="LA1">LAN</SelectItem>
+                                <SelectItem value="LA2">LAS</SelectItem>
+                                <SelectItem value="BR1">BR</SelectItem>
+                                <SelectItem value="JP1">JP</SelectItem>
+                                <SelectItem value="KR">KR</SelectItem>
+                                <SelectItem value="OC1">OCE</SelectItem>
+                                <SelectItem value="RU">RU</SelectItem>
+                                <SelectItem value="TR1">TR</SelectItem>
+                                <SelectItem value="ME1">ME</SelectItem>
+                                <SelectItem value="SEA">SEA</SelectItem>
+                                <SelectItem value="TW2">TW</SelectItem>
+                                <SelectItem value="VN2">VN</SelectItem>
+                                <SelectItem value="SG2">SG</SelectItem>
+                            </SelectContent>
+                        </Select>
+                    </FormControl>
+                    </FormLabel>
+                    
+                    <FormDescription>Enter your League of Legends region.</FormDescription>
                     <FormMessage />
                     </FormItem>
                 )}

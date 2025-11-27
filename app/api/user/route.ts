@@ -12,6 +12,7 @@ export async function POST(request: Request) {
   const body = await request.json();
   const summonerName = body.summonerName;
   const tagLine = body.tagLine;
+  const region = body.region.toLowerCase() || "na1";
 
     const response = await fetch(`https://americas.api.riotgames.com/riot/account/v1/accounts/by-riot-id/${summonerName}/${tagLine}`, {
     method: "GET",
@@ -21,27 +22,20 @@ export async function POST(request: Request) {
     });
     const data = await response.json();
     const puuid = data.puuid;
-    const responsetwo = await fetch(`https://la1.api.riotgames.com/lol/summoner/v4/summoners/by-puuid/${puuid}`, {
+    const responsetwo = await fetch(`https://${region}.api.riotgames.com/lol/summoner/v4/summoners/by-puuid/${puuid}`, {
     method: "GET",
     headers: {
       "X-Riot-Token": process.env.RIOT_API_KEY || "",
     }
     });
     const datatwo = await responsetwo.json();
-    const regionResposne = await fetch(`https://americas.api.riotgames.com/riot/account/v1/region/by-game/lol/by-puuid/${puuid}`, {
-    method: "GET",
-    headers: {
-      "X-Riot-Token": process.env.RIOT_API_KEY || "",
-    }
-    });
-    const regionData = await regionResposne.json();
-    const dataThree = await fetch(`https://la1.api.riotgames.com/lol/league/v4/entries/by-puuid/${puuid}`, {
+    const dataThree = await fetch(`https://${region}.api.riotgames.com/lol/league/v4/entries/by-puuid/${puuid}`, {
       method: "GET", headers:{
         "X-Riot-Token": process.env.RIOT_API_KEY || "",
       }
     });
     const rankData = await dataThree.json();
-    const champData = await fetch(`https://la1.api.riotgames.com/lol/champion-mastery/v4/champion-masteries/by-puuid/${puuid}/top?count=5`, {
+    const champData = await fetch(`https://${region}.api.riotgames.com/lol/champion-mastery/v4/champion-masteries/by-puuid/${puuid}/top?count=5`, {
       method: "GET", headers:{
         "X-Riot-Token": process.env.RIOT_API_KEY || "",
       }
@@ -62,7 +56,7 @@ export async function POST(request: Request) {
         profileIconId : datatwo.profileIconId,
         summonerLevel : datatwo.summonerLevel,
         puuid : puuid,
-        region: regionData.region,
+        region: region,
         rank: rankData,
         topChamps: topChamps,
     }

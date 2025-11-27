@@ -1,13 +1,6 @@
-import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
 import { cn, convertRankToNumber, Division, Tier } from '@/lib/utils';
 import { champInfo, rankInfo, UserData } from '@/types';
-import { zodResolver } from '@hookform/resolvers/zod';
-import React, { useState } from 'react'
-import { useForm } from 'react-hook-form';
-import z, { set } from 'zod';
 
 type Props = {
     userData: UserData | null;
@@ -15,15 +8,13 @@ type Props = {
     otherUserData?: UserData | null;
 }
 
-
-
 function SummonerContainer({ userData, noUserFound, otherUserData }: Props) {
 
     return (
     <div className="w-full">  
         {noUserFound && <p className="text-red-500 mt-4">No user found. Please check the summoner name and tag line.</p>}
         {userData && <>
-        <Card className='pt-0'>
+        <Card className='pt-0 gap-0'>
             <CardHeader className={cn("flex flex-col items-center m-0 p-4 rounded-t-xl", 
                 otherUserData ? otherUserData.summonerLevel > userData.summonerLevel ? "bg-red-500/10" : otherUserData.summonerLevel < userData.summonerLevel ? "bg-green-500/10" : "bg-yellow-500/10" : "bg-primary/10"
             )}>
@@ -31,12 +22,12 @@ function SummonerContainer({ userData, noUserFound, otherUserData }: Props) {
             <CardTitle>{userData.gameName}#{userData.tagLine}</CardTitle>
             <CardDescription className='text-center'>Level: {userData.summonerLevel}<br />Region: {userData.region}</CardDescription>
             </CardHeader>
-            <CardContent>
+            <CardContent className='p-0 m-0 flex flex-col'>
                 {userData.rank.length === 0 ? (
                     <p>Unranked</p>
                 ) : (
                     userData.rank.map((rankInfo: rankInfo) => (
-                        <div key={rankInfo.leagueId} className={cn("mb-4", otherUserData && otherUserData.rank.length > 0 ? (
+                        <div key={rankInfo.leagueId} className={cn("", otherUserData && otherUserData.rank.length > 0 ? (
                             otherUserData.rank.find(r => r.queueType === rankInfo.queueType) ? (
                                 convertRankToNumber(rankInfo.tier as Tier, rankInfo.rank as Division, rankInfo.leaguePoints) > convertRankToNumber(otherUserData.rank.find(r => r.queueType === rankInfo.queueType)!.tier as Tier, otherUserData.rank.find(r => r.queueType === rankInfo.queueType)!.rank as Division, otherUserData.rank.find(r => r.queueType === rankInfo.queueType)!.leaguePoints) ? "bg-green-500/10 p-2 rounded-md" : convertRankToNumber(otherUserData.rank.find(r => r.queueType === rankInfo.queueType)!.tier as Tier, otherUserData.rank.find(r => r.queueType === rankInfo.queueType)!.rank as Division, otherUserData.rank.find(r => r.queueType === rankInfo.queueType)!.leaguePoints) > convertRankToNumber(rankInfo.tier as Tier, rankInfo.rank as Division, rankInfo.leaguePoints) ? "bg-red-500/10 p-2 rounded-md" : "bg-yellow-500/10 p-2 rounded-md"
                             ) : ""
@@ -51,8 +42,12 @@ function SummonerContainer({ userData, noUserFound, otherUserData }: Props) {
                 )}
                 {userData.topChamps.length > 0 && <>
                 <h2 className="text-xl font-bold mt-4 mb-2">Top Champions</h2>
-                {userData.topChamps.map((champ: champInfo) => (
-                    <div key={champ.championId} className="mb-2">
+                {userData.topChamps.map((champ: champInfo, index : number) => (
+                    <div key={champ.championId} className={cn("pb-2", otherUserData && otherUserData.topChamps.length > 0 ? (
+                        otherUserData.topChamps[index] ? (
+                            champ.championPoints > otherUserData.topChamps[index].championPoints ? "bg-green-500/10 p-2 rounded-md" : champ.championPoints < otherUserData.topChamps[index].championPoints ? "bg-red-500/10 p-2 rounded-md" : "bg-yellow-500/10 p-2 rounded-md"
+                        ) : ""
+                    ) : "")}>
                         <p className=''><img src={`./images/champions/${champ.championId}.png`} className='size-12 inline' /> {champ.championName}: Level {champ.championLevel} / {champ.championPoints} Points</p>
                     </div>
                 ))}
