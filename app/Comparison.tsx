@@ -10,7 +10,7 @@ import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Spinner } from '@/components/ui/spinner';
 
-type Props = {}
+type Props = {} 
 
 const formSchema =  z.object({
   summonerName: z.string().min(1, "Summoner name is required"),
