@@ -43,6 +43,7 @@ function Comparison({}: Props) {
             defaultValues: {
                 summonerName: "",
                 tagLine: "",
+                region: ""
             },
         })
     
@@ -58,7 +59,7 @@ function Comparison({}: Props) {
               },
               body: JSON.stringify({
                 summonerName: data.summonerName,
-                tagLine: data.tagLine,
+                tagLine: data.tagLine.replace('#', ''),
                 region: data.region,
               }),
             })
@@ -88,7 +89,7 @@ function Comparison({}: Props) {
               },
               body: JSON.stringify({
                 summonerName: data.summonerName,
-                tagLine: data.tagLine,
+                tagLine: data.tagLine.replace('#', ''),
                 region: data.region,
               }),
             })
